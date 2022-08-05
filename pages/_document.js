@@ -1,17 +1,19 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
 import { GTM_ID } from "../lib/gtm";
+import * as gtag from "../lib/gtag";
 
 export default class MyDocument extends Document {
   render() {
     return (
       <Html>
         <Head />
-        <Script
+        <script
           strategy="afterInteractive"
+          async
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
         />
-        <Script
+        <script
           id="gtag-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
