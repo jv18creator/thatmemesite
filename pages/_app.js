@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }) => {
       ></script> */}
       <Script
         id="Adsense-id"
-        data-ad-client="NEXT_PUBLIC_ADSENSE_ID"
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
         async
         strategy="afterInteractive"
         onError={(e) => {
