@@ -14,8 +14,8 @@ export default class MyDocument extends Document {
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
         />
         <script
-          id="gtag-init"
-          strategy="afterInteractive"
+          // id="gtag-init"
+          // strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
@@ -27,6 +27,7 @@ export default class MyDocument extends Document {
           `,
           }}
         />
+
         <body>
           <noscript>
             <iframe

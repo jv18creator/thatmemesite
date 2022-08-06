@@ -3,6 +3,7 @@ import Script from "next/script";
 import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
 import { GTM_ID, pageview } from "../lib/gtm";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -80,7 +81,10 @@ const App = ({ Component, pageProps }) => {
           `,
         }}
       /> */}
-      <Component {...pageProps} />
+
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
     </>
   );
 };

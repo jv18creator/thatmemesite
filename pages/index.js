@@ -1,16 +1,8 @@
 import Head from "next/head";
 import Script from "next/script";
-import * as gtag from "../lib/gtag";
+import clientPromise from "../lib/mongodb";
 
-export default function Home() {
-  const handleSubmit = (e) => {
-    gtag.event({
-      action: "submit_form",
-      category: "Contact",
-      label: "A Label",
-    });
-  };
-
+export default function Home({ isConnected }) {
   return (
     <div>
       <Head>
@@ -22,6 +14,23 @@ export default function Home() {
         <meta name="keywords" content="memes, meme, famouse memes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="container">
+        {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+        `}
+        </Script>
+      </div>
+
       <Script
         async
         custom-element="amp-ad"
@@ -37,8 +46,14 @@ export default function Home() {
           data-ad-format="auto"
           data-full-width-responsive="true"
         ></ins>
-
-        <button onClick={handleSubmit}>Sign Up</button>
+        {isConnected ? (
+          <h2 className="subtitle">You are connected to MongoDB</h2>
+        ) : (
+          <h2 className="subtitle">
+            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+            for instructions.
+          </h2>
+        )}
         <amp-ad
           width="100vw"
           height="320"
@@ -53,4 +68,27 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  try {
+    await clientPromise;
+    // `await clientPromise` will use the default database passed in the MONGODB_URI
+    // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
+    //
+    // `const client = await clientPromise`
+    // `const db = client.db("myDatabase")`
+    //
+    // Then you can execute queries against your database like so:
+    // db.find({}) or any of the MongoDB Node Driver commands
+
+    return {
+      props: { isConnected: true },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: { isConnected: false },
+    };
+  }
 }
