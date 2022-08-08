@@ -1,8 +1,31 @@
+import { Button, Circle } from "@chakra-ui/react";
+import { isEmpty } from "lodash";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Script from "next/script";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../contexts/user.context";
 import clientPromise from "../lib/mongodb";
 
 export default function Home({ isConnected }) {
+  const navigate = useRouter();
+  const { user, fetchUser, logOutUser } = useContext(UserContext);
+
+  const loadUser = async () => {
+    if (!user) {
+      const fetchedUser = await fetchUser();
+      if (fetchedUser) {
+        console.log(`fetchedUser`, fetchedUser);
+        // Redirecting them once fetched.
+        // redirectNow();
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUser(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <Head>
@@ -47,12 +70,9 @@ export default function Home({ isConnected }) {
           data-full-width-responsive="true"
         ></ins>
         {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
+          <Circle bg={"#bada55"} size={18} />
         ) : (
-          <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
-            for instructions.
-          </h2>
+          <Circle bg={"tomato"} size={18} />
         )}
         <amp-ad
           width="100vw"
@@ -65,6 +85,11 @@ export default function Home({ isConnected }) {
         >
           <div overflow=""></div>
         </amp-ad>
+        {!isEmpty(user) ? (
+          <Button onClick={async () => await logOutUser()}>Log out</Button>
+        ) : (
+          <Button onClick={() => navigate.push("/sign-up")}>Sign Up</Button>
+        )}
       </main>
     </div>
   );

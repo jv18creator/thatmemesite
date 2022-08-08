@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
 import { GTM_ID, pageview } from "../lib/gtm";
 import { ChakraProvider } from "@chakra-ui/react";
+import { UserProvider } from "../contexts/user.context";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -63,7 +64,7 @@ const App = ({ Component, pageProps }) => {
       ></script>
 
       {/* Global Site Tag (gtag.js) - Google Analytics */}
-      {/* <Script
+      <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
       />
@@ -80,10 +81,12 @@ const App = ({ Component, pageProps }) => {
             });
           `,
         }}
-      /> */}
+      />
 
       <ChakraProvider>
-        <Component {...pageProps} />
+        <UserProvider>
+          <Component {...pageProps} />
+        </UserProvider>
       </ChakraProvider>
     </>
   );

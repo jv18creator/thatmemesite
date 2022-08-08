@@ -7,17 +7,33 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
-        <script
-          strategy="afterInteractive"
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-        />
-        <script
-          // id="gtag-init"
-          // strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+        <Head>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+          />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gtag.GA_TRACKING_ID}', { page_path: window.location.pathname });
+            `,
+            }}
+          />
+
+          <script
+            strategy="afterInteractive"
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+          />
+          <script
+            // id="gtag-init"
+            // strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -25,8 +41,9 @@ export default class MyDocument extends Document {
               page_path: window.location.pathname,
             });
           `,
-          }}
-        />
+            }}
+          />
+        </Head>
 
         <body>
           <noscript>
