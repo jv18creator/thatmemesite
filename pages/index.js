@@ -1,29 +1,16 @@
-import { Button, Circle } from "@chakra-ui/react";
-import { isEmpty } from "lodash";
+import { Box } from "@chakra-ui/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import Script from "next/script";
 import { useContext, useEffect } from "react";
+import GlobalNavigation from "../components/Globals/Navbar/GlobalNavigation";
 import { UserContext } from "../contexts/user.context";
 import clientPromise from "../lib/mongodb";
 
-export default function Home({ isConnected }) {
-  const navigate = useRouter();
-  const { user, fetchUser, logOutUser } = useContext(UserContext);
-
-  const loadUser = async () => {
-    if (!user) {
-      const fetchedUser = await fetchUser();
-      if (fetchedUser) {
-        console.log(`fetchedUser`, fetchedUser);
-        // Redirecting them once fetched.
-        // redirectNow();
-      }
-    }
-  };
+export default function Home() {
+  const { fetchUser } = useContext(UserContext);
 
   useEffect(() => {
-    loadUser(); // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchUser(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -61,35 +48,29 @@ export default function Home({ isConnected }) {
       />
 
       <main>
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
-          data-ad-slot="7748221138"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-        {isConnected ? (
-          <Circle bg={"#bada55"} size={18} />
-        ) : (
-          <Circle bg={"tomato"} size={18} />
-        )}
-        <amp-ad
-          width="100vw"
-          height="320"
-          type="adsense"
-          data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
-          data-ad-slot="7748221138"
-          data-auto-format="rspv"
-          data-full-width=""
-        >
-          <div overflow=""></div>
-        </amp-ad>
-        {!isEmpty(user) ? (
-          <Button onClick={async () => await logOutUser()}>Log out</Button>
-        ) : (
-          <Button onClick={() => navigate.push("/sign-up")}>Sign Up</Button>
-        )}
+        <Box>
+          <GlobalNavigation />
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+            data-ad-slot="7748221138"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+
+          <amp-ad
+            width="100vw"
+            height="320"
+            type="adsense"
+            data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+            data-ad-slot="7748221138"
+            data-auto-format="rspv"
+            data-full-width=""
+          >
+            <div overflow=""></div>
+          </amp-ad>
+        </Box>
       </main>
     </div>
   );

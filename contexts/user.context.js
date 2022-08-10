@@ -1,18 +1,23 @@
 import { createContext, useState } from "react";
 import { App, Credentials } from "realm-web";
+import fetchAppUser from "../helpers/fetchAppUser";
 import { APP_ID } from "../lib/realm/constants";
 
 // Creating a Realm App Instance
 const app = new App(APP_ID);
 
+// fetching user from localStorage
+const localUser = null;
+// typeof window != "undefined" && localStorage?.getItem("user") throw hydration error
 // Creating a user context to manage and access all the user related functions
 // across different component and pages.
+
 export const UserContext = createContext({
-  user: null,
+  user: localUser ? JSON.parse(localUser) : null,
 });
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(localUser ? JSON.parse(localUser) : null);
 
   // Function to login user into our Realm using their email & password
   const emailPasswordLogin = async (email, password) => {
@@ -39,11 +44,13 @@ export const UserProvider = ({ children }) => {
     if (!app.currentUser) return false;
     try {
       await app.currentUser.refreshCustomData();
+      const user = await fetchAppUser(user, app.currentUser);
       // Now if we have a user we are setting it to our user context
       // so that we can use it in our app across different components.
-      setUser(app.currentUser);
-      localStorage.setItem("user", JSON.stringify(app.currentUser));
-      return app.currentUser;
+      // setUser(app.currentUser);
+      // localStorage.setItem("user", JSON.stringify(app.currentUser));
+      setUser(user);
+      return user;
     } catch (error) {
       throw error;
     }

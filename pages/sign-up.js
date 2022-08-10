@@ -13,6 +13,7 @@ import InputField from "../components/Globals/FormFields/InputField";
 import { UserContext } from "../contexts/user.context";
 import * as gtag from "../lib/gtag";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignUpPage = () => {
   const navigate = useRouter();
@@ -126,13 +127,8 @@ const SignUpPage = () => {
             </form>
           </FormProvider>
         </FormControl>
-        <Text
-          align={"end"}
-          fontSize="sm"
-          onClick={() => navigate.push("/login")}
-          cursor="pointer"
-        >
-          Already a user? SIGN IN!!!
+        <Text align={"end"} fontSize="sm" cursor="pointer">
+          <Link href={"login"}>Already a user? SIGN IN!!!</Link>
         </Text>
       </Flex>
     </Flex>

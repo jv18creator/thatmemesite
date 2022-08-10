@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     let { db } = await connectToDatabase();
     await db.collection("users").insertOne(JSON.parse(req.body));
 
-    return res.json({
+    return res.status(201).json({
       message: "Account Created successfully",
       success: true,
     });
