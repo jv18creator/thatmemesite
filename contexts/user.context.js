@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { App, Credentials } from "realm-web";
 import fetchAppUser from "../helpers/fetchAppUser";
 import { APP_ID } from "../lib/realm/constants";
@@ -8,6 +8,7 @@ const app = new App(APP_ID);
 
 // fetching user from localStorage
 const localUser = null;
+// typeof window !== "undefined" && localStorage?.getItem("user");
 // typeof window != "undefined" && localStorage?.getItem("user") throw hydration error
 // Creating a user context to manage and access all the user related functions
 // across different component and pages.
@@ -17,7 +18,14 @@ export const UserContext = createContext({
 });
 
 export const UserProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(localUser ? JSON.parse(localUser) : null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setUser(JSON.parse(user));
+    setIsLoading(false);
+  }, []);
 
   // Function to login user into our Realm using their email & password
   const emailPasswordLogin = async (email, password) => {
@@ -88,6 +96,7 @@ export const UserProvider = ({ children }) => {
         emailPasswordSignup,
         logOutUser,
         resetUserPassword,
+        isLoading,
       }}
     >
       {children}

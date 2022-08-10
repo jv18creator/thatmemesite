@@ -1,1 +1,6 @@
 export const ERROR_TEXT_CLR = "#F56565";
+export const DARK_BORDER_COLOR_PRIMARY = "#2D3748";
+export const LIGHT_BORDER_COLOR_PRIMARY = "#EDF2F7";
+
+// BACKGROUND COLOR PALETTE
+export const LIGHT_CARD_BG = "#F7FAFC";

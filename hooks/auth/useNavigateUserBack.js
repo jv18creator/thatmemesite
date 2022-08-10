@@ -6,20 +6,20 @@ import { useRouter } from "next/router";
 const useNavigateUserBack = () => {
   const navigate = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, isLoading } = useContext(UserContext);
 
   console.log(`user`, user);
 
   useEffect(() => {
-    if (isEmpty(user)) {
+    if (isEmpty(user) && !isLoading) {
       navigate.push("/sign-up");
     }
-
     setIsMounted(true);
+
     return function cleanup() {
       setIsMounted(false);
     };
-  }, [navigate, user]);
+  }, [navigate, user, isLoading]);
 
   return {
     isMounted,

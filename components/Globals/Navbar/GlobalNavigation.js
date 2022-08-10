@@ -2,11 +2,14 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
+  Divider,
   Flex,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -16,12 +19,20 @@ import { useContext } from "react";
 import { UserContext } from "../../../contexts/user.context";
 import { isEmpty } from "lodash";
 import Link from "next/link";
+import {
+  DARK_BORDER_COLOR_PRIMARY,
+  LIGHT_BORDER_COLOR_PRIMARY,
+} from "../../../styles/globalColorTheme";
+import { AiOutlineHome } from "react-icons/ai";
 
 const GlobalNavigation = () => {
   const { user, logOutUser } = useContext(UserContext);
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const borderColor = useColorModeValue("#EDF2F7", "#2D3748");
+  const borderColor = useColorModeValue(
+    LIGHT_BORDER_COLOR_PRIMARY,
+    DARK_BORDER_COLOR_PRIMARY
+  );
   const shadow = useColorModeValue("sm", "lg");
 
   return (
@@ -48,13 +59,28 @@ const GlobalNavigation = () => {
         </Menu>
         <Box>
           <Flex gap={4} alignItems="center">
-            <Box onClick={toggleColorMode} cursor="pointer">
-              {colorMode === "light" ? (
-                <MoonIcon w={[4, 6]} h={[4, 6]} />
-              ) : (
-                <SunIcon w={[4, 6]} h={[4, 6]} />
-              )}
+            <Box display={["none", "block"]}>
+              <Link href="/">
+                <Flex
+                  alignItems={"center"}
+                  gap={2}
+                  transition="all 100ms"
+                  transitionDuration={3000}
+                  transitionTimingFunction="ease-in-out"
+                  _hover={{
+                    cursor: "pointer",
+                    borderBottomColor: borderColor,
+                    borderBottom: "2px",
+                  }}
+                >
+                  <AiOutlineHome style={{ cursor: "pointer" }} size={26} />
+                  <Text style={{ display: "flex" }}>HOME</Text>
+                </Flex>
+              </Link>
             </Box>
+            <Center display={["none", "block"]} height="50px">
+              <Divider orientation="vertical" />
+            </Center>
             {!isEmpty(user) ? (
               <Menu>
                 <MenuButton
@@ -65,12 +91,12 @@ const GlobalNavigation = () => {
                   _expanded={{ bg: "blue.400" }}
                   _focus={{ boxShadow: "outline" }}
                 >
-                  <Avatar size={["sm", "md"]} name={user.display_name} />
+                  <Avatar size="sm" name={user.display_name} />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>
-                    <Link href="/my-account">My Account</Link>
-                  </MenuItem>
+                  <Link href="/my-account">
+                    <MenuItem>My Account</MenuItem>
+                  </Link>
                   <MenuItem
                     bg={"#FC8181"}
                     onClick={async () => await logOutUser()}
@@ -84,6 +110,13 @@ const GlobalNavigation = () => {
                 <Link href="/sign-up">Sign Up</Link>
               </Button>
             )}
+            <Box onClick={toggleColorMode} cursor="pointer">
+              {colorMode === "light" ? (
+                <MoonIcon w={[5, 6]} h={[5, 6]} />
+              ) : (
+                <SunIcon w={[5, 6]} h={[5, 6]} />
+              )}
+            </Box>
           </Flex>
         </Box>
       </Flex>
