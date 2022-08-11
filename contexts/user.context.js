@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
       // Now if we have a user we are setting it to our user context
       // so that we can use it in our app across different components.
       // setUser(app.currentUser);
-      // localStorage.setItem("user", JSON.stringify(app.currentUser));
+      localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       return user;
     } catch (error) {

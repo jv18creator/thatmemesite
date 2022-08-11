@@ -1,7 +1,6 @@
 import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler(req, res) {
-  console.log(`DAMN req`, req.body);
   if (req.method !== "POST") {
     res.status(405).send({ message: "Only POST requests allowed" });
     return;

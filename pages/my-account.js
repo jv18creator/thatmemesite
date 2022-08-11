@@ -30,8 +30,6 @@ const MyAccountPage = () => {
 
   if (!isMounted) return;
 
-  console.log("watching", methods.watch());
-
   return (
     <>
       <GlobalNavigation />

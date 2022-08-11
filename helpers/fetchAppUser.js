@@ -7,7 +7,6 @@ const fetchAppUser = async (user, fetchedUser) => {
       const response = await axios.post(`/api/user`, {
         user: fetchedUser,
       });
-
       if (response.data.success) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
       }

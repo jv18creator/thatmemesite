@@ -3,6 +3,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { useContext, useEffect } from "react";
 import GlobalNavigation from "../components/Globals/Navbar/GlobalNavigation";
+import PostOfMemes from "../components/Globals/Posts/PostOfMemes";
 import { UserContext } from "../contexts/user.context";
 import clientPromise from "../lib/mongodb";
 
@@ -48,8 +49,9 @@ export default function Home() {
       />
 
       <main>
-        <Box>
+        <Box transition="background-color 200ms linear">
           <GlobalNavigation />
+          <PostOfMemes />
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}

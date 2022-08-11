@@ -1,23 +1,25 @@
 import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler(req, res) {
-  if (!req?.body?.user) {
+  if (!req?.body?.meme_data) {
     return res.status(405).send({
       success: false,
-      message: "User not found",
+      message: "Data not found",
     });
   }
 
   try {
     const { db } = await connectToDatabase();
-    const result = await db
-      .collection("users")
-      .findOne({ id: req.body.user.id });
+    await db.collection("memes").insertOne({
+      title: req.body.meme_data.title,
+      desciption: req.body.meme_data.desciption,
+      images: req.body.meme_data.meme_images_url,
+      user: req.body.user,
+    });
 
-    return res.status(200).send({
+    return res.status(201).json({
+      message: "Meme Created Successfully",
       success: true,
-      message: "User fetched successfully",
-      user: result,
     });
   } catch (error) {
     return res.status(400).send({
@@ -25,6 +27,4 @@ export default async function handler(req, res) {
       message: error?.message,
     });
   }
-
-  //   return res.status(405).send("Method not allowed.");
 }

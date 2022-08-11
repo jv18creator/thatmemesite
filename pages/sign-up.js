@@ -38,14 +38,14 @@ const SignUpPage = () => {
     });
 
     try {
-      const user = await emailPasswordSignup(data.email, data.password);
-      console.log(`user signed up`, user);
-      const fetchedUser = await fetchUser();
-
+      const fetchedUser = await emailPasswordSignup(data.email, data.password);
+      // console.log(`user signed up`, user);
+      // const fetchedUser = await fetchUser();
+      // console.log(`SIGN UP`, fetchedUser);
       const appUser = {
-        accessToken: fetchedUser.accessToken,
-        customData: fetchedUser.customData,
+        accessToken: fetchedUser?.accessToken ? fetchUser.accessToken : null,
         id: fetchedUser.id,
+        auth_id: fetchedUser.id,
         refreshToken: fetchedUser.refreshToken,
         state: fetchedUser.state,
         profile: {
@@ -66,7 +66,7 @@ const SignUpPage = () => {
           }),
         })
           .then((res) => {
-            console.log("res", res);
+            navigate.push("/login");
           })
           .catch((err) => console.error(`err`, err));
       }

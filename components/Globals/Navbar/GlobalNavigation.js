@@ -24,11 +24,11 @@ import {
   LIGHT_BORDER_COLOR_PRIMARY,
 } from "../../../styles/globalColorTheme";
 import { AiOutlineHome } from "react-icons/ai";
+import UploadModalContainer from "../UploadContainer/UploadModalContainer";
 
 const GlobalNavigation = () => {
   const { user, logOutUser } = useContext(UserContext);
   const { colorMode, toggleColorMode } = useColorMode();
-
   const borderColor = useColorModeValue(
     LIGHT_BORDER_COLOR_PRIMARY,
     DARK_BORDER_COLOR_PRIMARY
@@ -42,24 +42,15 @@ const GlobalNavigation = () => {
       shadow={shadow}
       p={4}
     >
-      <Flex justifyContent="space-between" alignItems="center">
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            icon={<HamburgerIcon />}
-            variant="outline"
-          />
-          <MenuList>
-            <MenuItem command="⌘T">New Tab</MenuItem>
-            <MenuItem command="⌘N">New Window</MenuItem>
-            <MenuItem command="⌘⇧N">Open Closed Tab</MenuItem>
-            <MenuItem command="⌘O">Open File...</MenuItem>
-          </MenuList>
-        </Menu>
+      <Flex
+        maxWidth={"1605px"}
+        mx="auto"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Box>
-          <Flex gap={4} alignItems="center">
-            <Box display={["none", "block"]}>
+          <Box display={["none", "block"]}>
+            <Flex alignItems={"center"} gap={4}>
               <Link href="/">
                 <Flex
                   alignItems={"center"}
@@ -73,14 +64,77 @@ const GlobalNavigation = () => {
                     borderBottom: "2px",
                   }}
                 >
-                  <AiOutlineHome style={{ cursor: "pointer" }} size={26} />
+                  <AiOutlineHome style={{ cursor: "pointer" }} size={20} />
+                  <Text style={{ display: "flex" }} size={14}>
+                    HOME
+                  </Text>
+                </Flex>
+              </Link>
+
+              <UploadModalContainer />
+            </Flex>
+          </Box>
+          <Box display={["block", "none"]}>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<HamburgerIcon />}
+                variant="outline"
+              />
+              <MenuList>
+                <MenuItem>
+                  <Link href="/">
+                    <Flex
+                      alignItems={"center"}
+                      gap={2}
+                      transition="all 100ms"
+                      transitionDuration={3000}
+                      transitionTimingFunction="ease-in-out"
+                      _hover={{
+                        cursor: "pointer",
+                        borderBottomColor: borderColor,
+                        borderBottom: "2px",
+                      }}
+                    >
+                      <AiOutlineHome style={{ cursor: "pointer" }} size={18} />
+                      <Text fontSize={12} style={{ display: "flex" }}>
+                        HOME
+                      </Text>
+                    </Flex>
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <UploadModalContainer />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Box>
+        <Box>
+          <Flex gap={4} alignItems="center">
+            {/* <Box display={["none", "block"]}>
+              <Link href="/">
+                <Flex
+                  alignItems={"center"}
+                  gap={2}
+                  transition="all 100ms"
+                  transitionDuration={3000}
+                  transitionTimingFunction="ease-in-out"
+                  _hover={{
+                    cursor: "pointer",
+                    borderBottomColor: borderColor,
+                    borderBottom: "2px",
+                  }}
+                >
+                  <AiOutlineHome style={{ cursor: "pointer" }} size={20} />
                   <Text style={{ display: "flex" }}>HOME</Text>
                 </Flex>
               </Link>
-            </Box>
-            <Center display={["none", "block"]} height="50px">
+            </Box> */}
+            {/* <Center display={["none", "block"]} height="50px">
               <Divider orientation="vertical" />
-            </Center>
+            </Center> */}
             {!isEmpty(user) ? (
               <Menu>
                 <MenuButton

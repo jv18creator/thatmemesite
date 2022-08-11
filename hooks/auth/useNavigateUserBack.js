@@ -8,7 +8,6 @@ const useNavigateUserBack = () => {
   const [isMounted, setIsMounted] = useState(false);
   const { user, isLoading } = useContext(UserContext);
 
-  console.log(`user`, user);
 
   useEffect(() => {
     if (isEmpty(user) && !isLoading) {
