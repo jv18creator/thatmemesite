@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   FormControl,
@@ -7,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { isEmpty } from "lodash";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import InputField from "../components/Globals/FormFields/InputField";
 import { UserContext } from "../contexts/user.context";
@@ -28,7 +29,7 @@ const SignUpPage = () => {
 
   const formBackground = useColorModeValue("gray.100", "gray.700");
   const inputBackground = useColorModeValue("#fff", "#000");
-  const { fetchUser, emailPasswordSignup } = useContext(UserContext);
+  const { fetchUser, emailPasswordSignup, user } = useContext(UserContext);
 
   const onUserSignUp = async (data) => {
     gtag.event({
@@ -75,6 +76,12 @@ const SignUpPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      navigate.push("/");
+    }
+  }, [user]);
+
   return (
     <Flex height={"100vh"} alignItems="center" justifyContent={"center"}>
       <Flex
@@ -120,7 +127,7 @@ const SignUpPage = () => {
                   required: "Please enter password",
                 }}
               />
-
+              <Box h={2} />
               <Button type="submit" width={"100%"} mb={6} colorScheme="teal">
                 Submit
               </Button>

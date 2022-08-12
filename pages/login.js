@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
   FormControl,
@@ -12,8 +13,10 @@ import InputField from "../components/Globals/FormFields/InputField";
 import { useRouter } from "next/router";
 import { UserContext } from "../contexts/user.context";
 import { ERROR_TEXT_CLR } from "../styles/globalColorTheme";
+import { isEmpty } from "lodash";
 
 const Login = () => {
+  const { user } = useContext(UserContext);
   const navigate = useRouter();
   const methods = useForm({
     shouldUseNativeValidation: false,
@@ -36,6 +39,12 @@ const Login = () => {
       console.log("login error", error);
     }
   };
+
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      navigate.push("/");
+    }
+  }, [user]);
 
   return (
     <>
@@ -84,7 +93,7 @@ const Login = () => {
                     required: "Please enter password",
                   }}
                 />
-
+                <Box h={2} />
                 <Button type="submit" width={"100%"} mb={6} colorScheme="teal">
                   Submit
                 </Button>

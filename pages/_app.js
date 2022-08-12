@@ -5,6 +5,8 @@ import * as gtag from "../lib/gtag";
 import { GTM_ID, pageview } from "../lib/gtm";
 import { ChakraProvider } from "@chakra-ui/react";
 import { UserProvider } from "../contexts/user.context";
+import theme from "../helpers/theme/theme";
+import "@fontsource/noto-sans";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -26,6 +28,12 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <>
+      {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+      <link
+        href={`https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&display=swap`}
+        rel="stylesheet"
+      ></link> */}
       {/* Google Tag Manager */}
       <Script
         id="gtag-base"
@@ -83,7 +91,7 @@ const App = ({ Component, pageProps }) => {
         }}
       />
 
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <UserProvider>
           <Component {...pageProps} />
         </UserProvider>

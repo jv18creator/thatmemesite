@@ -2,8 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Center,
-  Divider,
   Flex,
   Menu,
   MenuButton,
@@ -113,28 +111,6 @@ const GlobalNavigation = () => {
         </Box>
         <Box>
           <Flex gap={4} alignItems="center">
-            {/* <Box display={["none", "block"]}>
-              <Link href="/">
-                <Flex
-                  alignItems={"center"}
-                  gap={2}
-                  transition="all 100ms"
-                  transitionDuration={3000}
-                  transitionTimingFunction="ease-in-out"
-                  _hover={{
-                    cursor: "pointer",
-                    borderBottomColor: borderColor,
-                    borderBottom: "2px",
-                  }}
-                >
-                  <AiOutlineHome style={{ cursor: "pointer" }} size={20} />
-                  <Text style={{ display: "flex" }}>HOME</Text>
-                </Flex>
-              </Link>
-            </Box> */}
-            {/* <Center display={["none", "block"]} height="50px">
-              <Divider orientation="vertical" />
-            </Center> */}
             {!isEmpty(user) ? (
               <Menu>
                 <MenuButton

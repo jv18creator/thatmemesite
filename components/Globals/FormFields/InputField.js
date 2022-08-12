@@ -10,8 +10,9 @@ const InputField = (props) => {
     placeholder,
     type,
     rules = {},
-    inputBackground,
-    formLabel,
+    inputBackground = undefined,
+    formLabel = null,
+    fieldHelperText = null,
   } = props;
   const {
     control,
@@ -20,7 +21,7 @@ const InputField = (props) => {
 
   return (
     <>
-      <FormLabel>{formLabel}</FormLabel>
+      {formLabel ? <FormLabel>{formLabel}</FormLabel> : null}
       <Controller
         control={control}
         name={name}
@@ -35,6 +36,7 @@ const InputField = (props) => {
               type={type}
               background={inputBackground}
               shadow="sm"
+              fontSize={14}
               isInvalid={errors?.[name]?.message ? true : false}
             />
             {errors?.[name]?.message ? (
@@ -42,10 +44,17 @@ const InputField = (props) => {
                 {errors[name].message}
               </Text>
             ) : null}
-            <Box mb={3} />
           </>
         )}
       />
+      {fieldHelperText ? (
+        <>
+          <Box mb={2} />
+          <FormLabel fontSize={12}>{fieldHelperText}</FormLabel>
+        </>
+      ) : (
+        <Box mb={2} />
+      )}
     </>
   );
 };

@@ -4,6 +4,10 @@ import Script from "next/script";
 import { useContext, useEffect } from "react";
 import GlobalNavigation from "../components/Globals/Navbar/GlobalNavigation";
 import PostOfMemes from "../components/Globals/Posts/PostOfMemes";
+import {
+  MemePostsContext,
+  MemePostsProvider,
+} from "../contexts/memePosts.context";
 import { UserContext } from "../contexts/user.context";
 import clientPromise from "../lib/mongodb";
 
@@ -20,12 +24,26 @@ export default function Home() {
         <title>That Meme Site</title>
         <meta
           name="description"
-          content="Browser latest memes on the internet"
+          content="Search and Browser all latest and trending memes on the internet"
         />
-        <meta name="keywords" content="memes, meme, famouse memes" />
+        <meta
+          name="keywords"
+          content="memes, meme, famouse memes, trending memes, famous memes, latest memes, akshaykumar memes, akshay kumar memes"
+        />
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charset="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
       </Head>
-      <div className="container">
+      <div>
         {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
@@ -49,30 +67,32 @@ export default function Home() {
       />
 
       <main>
-        <Box transition="background-color 200ms linear">
-          <GlobalNavigation />
-          <PostOfMemes />
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
-            data-ad-slot="7748221138"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
+        <MemePostsProvider>
+          <Box transition="background-color 200ms linear">
+            <GlobalNavigation />
+            <PostOfMemes />
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+              data-ad-slot="7748221138"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
 
-          <amp-ad
-            width="100vw"
-            height="320"
-            type="adsense"
-            data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
-            data-ad-slot="7748221138"
-            data-auto-format="rspv"
-            data-full-width=""
-          >
-            <div overflow=""></div>
-          </amp-ad>
-        </Box>
+            <amp-ad
+              width="100vw"
+              height="320"
+              type="adsense"
+              data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+              data-ad-slot="7748221138"
+              data-auto-format="rspv"
+              data-full-width=""
+            >
+              <div overflow=""></div>
+            </amp-ad>
+          </Box>
+        </MemePostsProvider>
       </main>
     </div>
   );

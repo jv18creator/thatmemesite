@@ -4,4 +4,14 @@ const nextConfig = {
   swcMinify: true,
 };
 
-module.exports = nextConfig;
+module.exports = {
+  ...nextConfig,
+  images: {
+    domains: [
+      "firebasestorage.googleapis.com",
+      "www.pngfind.com",
+      "lh3.googleusercontent.com",
+      "graph.facebook.com",
+    ],
+  },
+};

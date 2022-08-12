@@ -11,8 +11,9 @@ export default async function handler(req, res) {
   try {
     const { db } = await connectToDatabase();
     await db.collection("memes").insertOne({
-      title: req.body.meme_data.title,
-      desciption: req.body.meme_data.desciption,
+      // title: req.body.meme_data.title,
+      description: req.body.meme_data.description,
+      meme_caption: req.body.meme_data.meme_caption,
       images: req.body.meme_data.meme_images_url,
       user: req.body.user,
     });

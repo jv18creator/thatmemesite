@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import _ from "lodash";
+import _, { isEmpty } from "lodash";
 import MemeUploadIntStep from "./MemeUploadIntStep";
 import MemeUploadFinalStep from "./MemeUploadFinalStep";
 import imageCompression from "browser-image-compression";
@@ -23,6 +23,8 @@ import {
 import { storage } from "../../../helpers/firebase/config";
 import axios from "axios";
 import { UserContext } from "../../../contexts/user.context";
+import Link from "next/link";
+import { MemePostsContext } from "../../../contexts/memePosts.context";
 
 const INIT_FORM = "init";
 const FINALIZE_FORM = "final";
@@ -30,14 +32,18 @@ const MODAL_SIZES = ["xs", "sm", "md", "lg", "xl", "2xl"];
 
 const UploadModal = ({ isOpen, onClose }) => {
   const { user } = useContext(UserContext);
+  const { fetchMemes } = useContext(MemePostsContext);
   const [readableImages, setReadableImages] = useState([]);
+  const [isDataUploading, setIsDataUploading] = useState(false);
   const [formError, setFormError] = useState("");
   const [formStep, setFormStep] = useState(INIT_FORM);
   const methods = useForm({
     defaultValues: {
       meme_images: [],
-      desciption: "",
-      title: "",
+      description: "",
+      meme_caption: "",
+      meme_images_url: [],
+      // title: "",
     },
   });
 
@@ -91,7 +97,7 @@ const UploadModal = ({ isOpen, onClose }) => {
           (err) => reject(err),
           async () => {
             await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              resolve(url);
+              resolve({ url: url, alt: file.name });
             });
           }
         );
@@ -113,18 +119,31 @@ const UploadModal = ({ isOpen, onClose }) => {
   };
 
   const onSubmit = async (data) => {
+    setIsDataUploading(true);
     delete data.meme_images;
     delete user.profile;
-    delete user.display_name;
     delete user.state;
 
-    await axios.post("/api/upload-meme", { meme_data: data, user: user });
+    await axios
+      .post("/api/upload-meme", { meme_data: data, user: user })
+      .then((response) => {
+        setIsDataUploading(false);
+        if (response.data.success) {
+          fetchMemes();
+        }
+      })
+      .catch((error) => setIsDataUploading(false));
 
     onClose();
   };
 
   const handleFormStep = async () => {
+    if (formStep === FINALIZE_FORM) {
+      methods.handleSubmit(onSubmit)();
+    }
+
     if (readableImages?.length) {
+      setIsDataUploading(true);
       setFormStep(FINALIZE_FORM);
 
       let allPromises = [];
@@ -143,6 +162,7 @@ const UploadModal = ({ isOpen, onClose }) => {
       }
 
       const uploadedUrls = await Promise.all(allPromises);
+      setIsDataUploading(false);
 
       if (uploadedUrls?.length) {
         methods.setValue("meme_images_url", uploadedUrls);
@@ -150,11 +170,9 @@ const UploadModal = ({ isOpen, onClose }) => {
     } else {
       setFormError("Select an image");
     }
-
-    if (formStep === FINALIZE_FORM) {
-      methods.handleSubmit(onSubmit)();
-    }
   };
+
+  console.log(`watching`, methods.watch());
 
   return (
     <>
@@ -169,24 +187,26 @@ const UploadModal = ({ isOpen, onClose }) => {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>
-                {formStep === INIT_FORM
-                  ? "Upload Images"
-                  : formStep === FINALIZE_FORM
-                  ? "Add Details"
-                  : null}
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                {formStep === INIT_FORM ? (
-                  <MemeUploadIntStep
-                    readableImages={readableImages}
-                    handleImageDeletion={handleImageDeletion}
-                  />
-                ) : formStep === FINALIZE_FORM ? (
-                  <MemeUploadFinalStep />
-                ) : null}
-                {/* <Box mt={4}></Box>
+              {!isEmpty(user) ? (
+                <>
+                  <ModalHeader>
+                    {formStep === INIT_FORM
+                      ? "Upload Images (Step 1 / 2)"
+                      : formStep === FINALIZE_FORM
+                      ? "Add Details (Step 2 / 2)"
+                      : null}
+                  </ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    {formStep === INIT_FORM ? (
+                      <MemeUploadIntStep
+                        readableImages={readableImages}
+                        handleImageDeletion={handleImageDeletion}
+                      />
+                    ) : formStep === FINALIZE_FORM ? (
+                      <MemeUploadFinalStep />
+                    ) : null}
+                    {/* <Box mt={4}></Box>
                   <Progress
                     hasStripe
                     value={
@@ -200,39 +220,68 @@ const UploadModal = ({ isOpen, onClose }) => {
                     transitionDelay={"40000ms"}
                     isAnimated
                   /> */}
-                {!readableImages?.length && formError ? (
-                  <Text
-                    align={"center"}
-                    textTransform="uppercase"
-                    fontSize={14}
-                    color="red.300"
-                  >
-                    {formError}
-                  </Text>
-                ) : null}
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  variant="ghost"
-                  colorScheme="teal"
-                  mr={3}
-                  width={"50%"}
-                  border="2px"
-                  borderColor={"teal"}
-                  onClick={onClose}
-                >
-                  Close
-                </Button>
-                <Button
-                  onClick={handleFormStep}
-                  // onClick={methods.handleSubmit(onSubmit)}
-                  type="submit"
-                  width={"50%"}
-                  colorScheme="teal"
-                >
-                  {formStep === INIT_FORM ? "Next" : "Finish"}
-                </Button>
-              </ModalFooter>
+                    {!readableImages?.length && formError ? (
+                      <Text
+                        align={"center"}
+                        textTransform="uppercase"
+                        fontSize={14}
+                        color="red.300"
+                      >
+                        {formError}
+                      </Text>
+                    ) : null}
+                  </ModalBody>
+                  <ModalFooter gap={3}>
+                    <Button
+                      variant="ghost"
+                      colorScheme="teal"
+                      width={"50%"}
+                      border="2px"
+                      borderColor={"teal"}
+                      onClick={onClose}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      onClick={handleFormStep}
+                      type="submit"
+                      width={"50%"}
+                      colorScheme="teal"
+                      isDisabled={isDataUploading}
+                      loadingText={
+                        !methods.watch("meme_images_url")?.length
+                          ? "Uploading Images"
+                          : "Publishing..."
+                      }
+                      isLoading={formStep === FINALIZE_FORM && isDataUploading}
+                    >
+                      {formStep === INIT_FORM ? "Next" : "Finish"}
+                    </Button>
+                  </ModalFooter>
+                </>
+              ) : (
+                <>
+                  <ModalHeader>Add an account before proceeding.</ModalHeader>
+                  <ModalFooter gap={3}>
+                    <Link href="/login">
+                      <Button
+                        border="2px"
+                        borderColor={"teal"}
+                        variant="ghost"
+                        color={"teal"}
+                        width={"50%"}
+                      >
+                        LOG IN
+                      </Button>
+                    </Link>
+                    <Link href="/sign-up">
+                      <Button colorScheme="teal" width={"50%"}>
+                        SIGN UP
+                      </Button>
+                    </Link>
+                  </ModalFooter>
+                </>
+              )}
             </ModalContent>
           </Modal>
         </form>
