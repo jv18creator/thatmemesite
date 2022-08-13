@@ -6,9 +6,11 @@ import { BiShare } from "react-icons/bi";
 import axios from "axios";
 import { UserContext } from "../../../contexts/user.context";
 import { toggleLikeAction } from "./Utils/utils";
+import { useRouter } from "next/router";
 
 const PublicPostActions = ({ meme, setUpdatedMeme }) => {
   const { user } = useContext(UserContext);
+  const navigate = useRouter();
   const [likeAction, setLikeAction] = useState({
     count: meme?.liked_by?.length ? meme?.liked_by?.length : 0,
     has_current_user_liked: meme?.liked_by?.length
@@ -19,6 +21,10 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
   const commentCount = 0;
 
   const handleLikeAction = async () => {
+    if (!user) {
+      navigate.push("/login");
+      return;
+    }
     const { action } = toggleLikeAction(meme, user);
     const response = await axios.post("/api/update-meme-post", {
       liked_by: {
@@ -53,7 +59,9 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
             <AiFillHeart size={22} fill="#EC4856" />
           </Box>
         ) : (
-          <AiOutlineHeart onClick={handleLikeAction} size={22} />
+          <Box cursor={"pointer"} onClick={handleLikeAction}>
+            <AiOutlineHeart size={22} />
+          </Box>
         )}
         <FaRegComment size={20} />
         <BiShare size={22} style={{ transform: `rotateY(180deg)` }} />
