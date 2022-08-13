@@ -10,6 +10,7 @@ const theme = extendTheme({
     primary: "#66BFBF",
     secondary: "#FF0063",
     light_primary: "#EAF6F6",
+    like_heart: "#EC4856",
   },
 });
 

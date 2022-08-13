@@ -7,6 +7,7 @@ import {
   Flex,
   Heading,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import PublicPostActions from "./PublicPostActions";
 import Slider from "react-slick";
@@ -15,20 +16,22 @@ import Image from "next/image";
 
 const MemePost = ({ meme }) => {
   const [updatedMeme, setUpdatedMeme] = useState(meme);
+  const boxShadow = useColorModeValue("lg", "2xl");
+  const boxBgColor = useColorModeValue("#ffffff", "");
 
   return (
     <Flex
       direction={"column"}
       boxShadow={boxShadow}
-      width={["100%", "60%", "30%"]}
+      width={["100%", "65%", "45%"]}
       px={[4, 6]}
       py={6}
       borderRadius="md"
-      key={updatedMeme._id}
       bg={boxBgColor}
       border="1px"
       borderColor={"light_primary"}
       mb={8}
+      mx="auto"
     >
       <Box>
         <Flex gap={2} alignItems="center" justifyContent="flex-start">

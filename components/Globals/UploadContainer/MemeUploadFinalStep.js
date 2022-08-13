@@ -25,7 +25,7 @@ const MemeUploadFinalStep = () => {
         inputBackground={inputBackground}
         formLabel="Description (Optional)"
         name="description"
-        placeholder="ONE DOES NOT SIMPLY FIND GOOD MEMES"
+        placeholder="Eg. Success kid"
         fieldHelperText="Description will not be displayed, but is helpful for searching the meme."
       />
     </>

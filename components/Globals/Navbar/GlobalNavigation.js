@@ -43,7 +43,7 @@ const GlobalNavigation = () => {
       bg={bgColor}
     >
       <Flex
-        maxWidth={"1605px"}
+        maxWidth={"1440px"}
         mx="auto"
         justifyContent="space-between"
         alignItems="center"
@@ -144,9 +144,9 @@ const GlobalNavigation = () => {
             )}
             <Box onClick={toggleColorMode} cursor="pointer">
               {colorMode === "light" ? (
-                <MoonIcon w={[5, 6]} h={[5, 6]} />
-              ) : (
                 <SunIcon w={[5, 6]} h={[5, 6]} />
+              ) : (
+                <MoonIcon w={[5, 6]} h={[5, 6]} />
               )}
             </Box>
           </Flex>

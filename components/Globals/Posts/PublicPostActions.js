@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
@@ -32,8 +32,7 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
     });
 
     if (response.data.success) {
-      // setUpdatedMeme(response.data.meme);
-      console.log(`response`, response);
+      setUpdatedMeme(response.data.meme);
       setLikeAction((prevState) => ({
         ...prevState,
         count: response.data.meme?.liked_by?.length,
@@ -47,15 +46,28 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
   };
 
   return (
-    <Flex gap={4} mt={4}>
-      {likeAction.has_current_user_liked ? (
-        <AiFillHeart onClick={handleLikeAction} size={22} fill="pink" />
-      ) : (
-        <AiOutlineHeart onClick={handleLikeAction} size={22} />
-      )}
-      <FaRegComment size={20} />
-      <BiShare size={22} style={{ transform: `rotateY(180deg)` }} />
-    </Flex>
+    <>
+      <Flex gap={4} mt={4}>
+        {likeAction.has_current_user_liked ? (
+          <Box cursor={"pointer"} onClick={handleLikeAction}>
+            <AiFillHeart size={22} fill="#EC4856" />
+          </Box>
+        ) : (
+          <AiOutlineHeart onClick={handleLikeAction} size={22} />
+        )}
+        <FaRegComment size={20} />
+        <BiShare size={22} style={{ transform: `rotateY(180deg)` }} />
+      </Flex>
+
+      <Flex gap={6} mt={2}>
+        <Box cursor={"pointer"}>
+          <Text fontSize={14}>{likeAction.count} Likes</Text>
+        </Box>
+        <Box cursor={"pointer"}>
+          <Text fontSize={14}>0 Comments</Text>
+        </Box>
+      </Flex>
+    </>
   );
 };
 
