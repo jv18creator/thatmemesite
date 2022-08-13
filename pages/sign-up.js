@@ -40,9 +40,6 @@ const SignUpPage = () => {
 
     try {
       const fetchedUser = await emailPasswordSignup(data.email, data.password);
-      // console.log(`user signed up`, user);
-      // const fetchedUser = await fetchUser();
-      // console.log(`SIGN UP`, fetchedUser);
       const appUser = {
         accessToken: fetchedUser?.accessToken ? fetchUser.accessToken : null,
         id: fetchedUser.id,

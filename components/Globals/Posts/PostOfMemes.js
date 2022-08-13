@@ -75,8 +75,9 @@ var settings = {
 
 const PostOfMemes = () => {
   const { fetchMemes, isLoading, memes } = useContext(MemePostsContext);
-
+  const bgColor = useColorModeValue("#EAF6F6", "");
   const boxShadow = useColorModeValue("lg", "2xl");
+  const boxBgColor = useColorModeValue("#ffffff", "");
 
   useEffect(() => {
     fetchMemes();
@@ -91,9 +92,10 @@ const PostOfMemes = () => {
       </Stack>
     );
   }
-
+  // bgGradient="linear(to-r, #FF0063, #66BFBF)"
+  // bg="#EAF6F6"
   return (
-    <Box m={[6, 8]}>
+    <Box bg={bgColor} p={[6, 8]}>
       <Box maxWidth={"1605px"} mx="auto">
         {memes.map((meme) => {
           return (
@@ -105,6 +107,10 @@ const PostOfMemes = () => {
               py={[6]}
               borderRadius="md"
               key={meme._id}
+              bg={boxBgColor}
+              border="1px"
+              borderColor={"light_primary"}
+              mb={8}
             >
               <Box>
                 <Flex gap={2} alignItems="center" justifyContent="flex-start">
@@ -161,7 +167,7 @@ const PostOfMemes = () => {
               <Box mt={meme.images?.length > 1 ? 8 : 2}>
                 <Divider />
               </Box>
-              <PublicPostActions />
+              <PublicPostActions meme={meme} />
             </Flex>
           );
         })}

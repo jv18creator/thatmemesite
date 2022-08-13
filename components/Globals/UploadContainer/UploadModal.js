@@ -94,7 +94,10 @@ const UploadModal = ({ isOpen, onClose }) => {
         uploadTask.on(
           "state_changed",
           (snap_shot) => {},
-          (err) => reject(err),
+          (err) => {
+            console.log(`err is `, err);
+            reject(err);
+          },
           async () => {
             await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
               resolve({ url: url, alt: file.name });
@@ -172,8 +175,6 @@ const UploadModal = ({ isOpen, onClose }) => {
     }
   };
 
-  console.log(`watching`, methods.watch());
-
   return (
     <>
       <FormProvider {...methods}>
@@ -235,6 +236,8 @@ const UploadModal = ({ isOpen, onClose }) => {
                     <Button
                       variant="ghost"
                       colorScheme="teal"
+                      fontWeight={[500]}
+                      fontSize={[14, 16]}
                       width={"50%"}
                       border="2px"
                       borderColor={"teal"}
@@ -247,6 +250,8 @@ const UploadModal = ({ isOpen, onClose }) => {
                       type="submit"
                       width={"50%"}
                       colorScheme="teal"
+                      fontWeight={[500]}
+                      fontSize={[14, 16]}
                       isDisabled={isDataUploading}
                       loadingText={
                         !methods.watch("meme_images_url")?.length
@@ -262,6 +267,7 @@ const UploadModal = ({ isOpen, onClose }) => {
               ) : (
                 <>
                   <ModalHeader>Add an account before proceeding.</ModalHeader>
+                  <ModalCloseButton />
                   <ModalFooter gap={3}>
                     <Link href="/login">
                       <Button
@@ -270,12 +276,19 @@ const UploadModal = ({ isOpen, onClose }) => {
                         variant="ghost"
                         color={"teal"}
                         width={"50%"}
+                        fontWeight={[500]}
+                        fontSize={[14, 16]}
                       >
                         LOG IN
                       </Button>
                     </Link>
                     <Link href="/sign-up">
-                      <Button colorScheme="teal" width={"50%"}>
+                      <Button
+                        fontWeight={[500]}
+                        fontSize={[14, 16]}
+                        colorScheme="teal"
+                        width={"50%"}
+                      >
                         SIGN UP
                       </Button>
                     </Link>

@@ -32,6 +32,7 @@ const GlobalNavigation = () => {
     DARK_BORDER_COLOR_PRIMARY
   );
   const shadow = useColorModeValue("sm", "lg");
+  const bgColor = useColorModeValue("#66BFBF", "");
 
   return (
     <Box
@@ -39,6 +40,7 @@ const GlobalNavigation = () => {
       borderBottomColor={borderColor}
       shadow={shadow}
       p={4}
+      bg={bgColor}
     >
       <Flex
         maxWidth={"1605px"}

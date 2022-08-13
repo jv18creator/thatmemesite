@@ -15,8 +15,6 @@ export default async function handler(req, res) {
     // });
 
     const results = await something.toArray();
-    console.log(`something`, await something.toArray());
-    console.log(`results are`, results);
 
     return res.status(200).send({
       success: true,
@@ -24,7 +22,6 @@ export default async function handler(req, res) {
       memes: results,
     });
   } catch (error) {
-    console.log(`MEME error`, error);
     return res.status(400).send({
       success: false,
       message: error?.message,

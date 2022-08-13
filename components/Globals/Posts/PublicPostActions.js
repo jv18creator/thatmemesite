@@ -1,47 +1,60 @@
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
-import { AiOutlineHeart } from "react-icons/ai";
-import { FaComments } from "react-icons/fa";
+import { Flex, useColorModeValue } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { FaRegComment } from "react-icons/fa";
+import { BiShare } from "react-icons/bi";
+import axios from "axios";
+import { UserContext } from "../../../contexts/user.context";
+import { toggleLikeAction } from "./Utils/utils";
 
-const PublicPostActions = () => {
-  const likeCount = 0;
+const PublicPostActions = ({ meme, setUpdatedMeme }) => {
+  const { user } = useContext(UserContext);
+  const [likeAction, setLikeAction] = useState({
+    count: meme?.liked_by?.length ? meme?.liked_by?.length : 0,
+    has_current_user_liked: meme?.liked_by?.length
+      ? meme?.liked_by?.some((liked_by) => liked_by.auth_id === user?.auth_id)
+      : false,
+  });
+
   const commentCount = 0;
-  const borderColor = useColorModeValue("#000", "#fff");
 
-  const displayBreakPoints = ["none", "none", "none", "inline", "inline"];
+  const handleLikeAction = async () => {
+    const { action } = toggleLikeAction(meme, user);
+    const response = await axios.post("/api/update-meme-post", {
+      liked_by: {
+        auth_id: user?.auth_id,
+        display_name: user?.display_name,
+        photo_url: user?.photo_url,
+        email: user?.profile?.data?.email,
+      },
+      liked: action === "like" ? true : false,
+      meme_id: meme._id,
+    });
+
+    if (response.data.success) {
+      // setUpdatedMeme(response.data.meme);
+      console.log(`response`, response);
+      setLikeAction((prevState) => ({
+        ...prevState,
+        count: response.data.meme?.liked_by?.length,
+        has_current_user_liked: response.data.meme?.liked_by?.length
+          ? response.data.meme?.liked_by?.some(
+              (liked_by) => liked_by.auth_id === user?.auth_id
+            )
+          : false,
+      }));
+    }
+  };
 
   return (
     <Flex gap={4} mt={4}>
-      <Box
-        border={"2px"}
-        px={[3, 4]}
-        py={2}
-        borderColor="pink"
-        borderRadius={"md"}
-        cursor="pointer"
-      >
-        <Flex gap={2} alignItems="center">
-          <AiOutlineHeart color="pink" size={22} />
-          <Text fontSize={[14, 16]}>
-            {likeCount} <Text display={displayBreakPoints}>Likes</Text>
-          </Text>
-        </Flex>
-      </Box>
-      <Box
-        border={"2px"}
-        px={[3, 4]}
-        py={2}
-        borderColor={borderColor}
-        borderRadius={"md"}
-        cursor="pointer"
-      >
-        <Flex gap={2} alignItems="center">
-          <FaComments size={22} />
-          <Text fontSize={[14, 16]}>
-            {commentCount} <Text display={displayBreakPoints}>Comments</Text>
-          </Text>
-        </Flex>
-      </Box>
+      {likeAction.has_current_user_liked ? (
+        <AiFillHeart onClick={handleLikeAction} size={22} fill="pink" />
+      ) : (
+        <AiOutlineHeart onClick={handleLikeAction} size={22} />
+      )}
+      <FaRegComment size={20} />
+      <BiShare size={22} style={{ transform: `rotateY(180deg)` }} />
     </Flex>
   );
 };

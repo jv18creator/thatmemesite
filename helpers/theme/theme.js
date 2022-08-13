@@ -6,6 +6,11 @@ const theme = extendTheme({
   fonts: {
     body: "Noto Sans",
   },
+  colors: {
+    primary: "#66BFBF",
+    secondary: "#FF0063",
+    light_primary: "#EAF6F6",
+  },
 });
 
 export default theme;

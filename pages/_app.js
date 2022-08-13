@@ -7,6 +7,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { UserProvider } from "../contexts/user.context";
 import theme from "../helpers/theme/theme";
 import "@fontsource/noto-sans";
+import "../styles/globals.css";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
