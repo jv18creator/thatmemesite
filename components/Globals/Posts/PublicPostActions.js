@@ -26,6 +26,21 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
       return;
     }
     const { action } = toggleLikeAction(meme, user);
+
+    if (action === "like") {
+      setLikeAction((prevState) => ({
+        ...prevState,
+        count: meme?.liked_by?.length ? meme?.liked_by?.length + 1 : 1,
+        has_current_user_liked: true,
+      }));
+    } else {
+      setLikeAction((prevState) => ({
+        ...prevState,
+        count: meme?.liked_by?.length ? meme?.liked_by?.length - 1 : 0,
+        has_current_user_liked: false,
+      }));
+    }
+
     const response = await axios.post("/api/update-meme-post", {
       liked_by: {
         auth_id: user?.auth_id,
@@ -37,7 +52,7 @@ const PublicPostActions = ({ meme, setUpdatedMeme }) => {
       meme_id: meme._id,
     });
 
-    if (response.data.success) {
+    if (response?.data?.success) {
       setUpdatedMeme(response.data.meme);
       setLikeAction((prevState) => ({
         ...prevState,
