@@ -46,6 +46,17 @@ const PostOfMemes = () => {
                     key={meme._id}
                   >
                     <MemePost meme={meme} />
+                    <amp-ad
+                      width="100vw"
+                      height="320"
+                      type="adsense"
+                      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+                      data-ad-slot="9442765546"
+                      data-auto-format="rspv"
+                      data-full-width=""
+                    >
+                      <div overflow=""></div>
+                    </amp-ad>
                   </motion.div>
                 );
               })}
