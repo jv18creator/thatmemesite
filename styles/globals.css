@@ -9,3 +9,7 @@ html[data-theme="dark"] {
 .slick-dots li button:before {
   color: var(--icon-color) !important;
 }
+
+.comment_focus:focus {
+  background-color: #edf2f7 !important;
+}
