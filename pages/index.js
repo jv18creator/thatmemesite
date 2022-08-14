@@ -30,6 +30,10 @@ export default function Home() {
           name="keywords"
           content="memes, meme, famouse memes, trending memes, famous memes, latest memes, akshaykumar memes, akshay kumar memes"
         />
+        <meta
+          name="google-site-verification"
+          content="dsQ1QoRqNSnuuc51fbNM17V0R_ZpHrx2fHxsuV_7cwc"
+        />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
