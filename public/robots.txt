@@ -7,3 +7,4 @@ Host: https://www.thatmeme.site/
 
 # Sitemaps
 Sitemap: https://www.thatmeme.site/sitemap.xml
+Sitemap: https://www.thatmeme.site/server-sitemap.xml
