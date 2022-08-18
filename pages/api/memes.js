@@ -3,7 +3,7 @@ import { connectToDatabase } from "../../lib/mongodb";
 export default async function handler(req, res) {
   try {
     const { db } = await connectToDatabase();
-    const something = await db.collection("memes").find({});
+    const memes = await db.collection("memes").find({});
     // .toArray(function (err, arrResults) {
     //   console.log(`arrResults`, arrResults);
     //   // result = [...arrResults];
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     //   return arrResults;
     // });
 
-    const results = await something.toArray();
+    const results = await memes.toArray();
 
     return res.status(200).send({
       success: true,

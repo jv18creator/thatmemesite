@@ -11,5 +11,5 @@ html[data-theme="dark"] {
 }
 
 .comment_focus:focus {
-  background-color: #edf2f7 !important;
+  /* background-color: #edf2f7 !important; */
 }

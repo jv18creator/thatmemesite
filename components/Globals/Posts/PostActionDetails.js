@@ -8,7 +8,7 @@ const PostActionDetails = ({ likeAction, meme }) => {
       <Box cursor={"pointer"}>
         <Text fontSize={14}>{likeAction.count} Likes</Text>
       </Box>
-      <Link href={`/comments/${meme._id}`}>
+      <Link href={`/memes/${meme._id}/comments`}>
         <Box cursor={"pointer"}>
           <Text fontSize={14}>
             {meme?.commented_by?.length ? meme?.commented_by?.length : 0}{" "}
