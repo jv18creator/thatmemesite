@@ -1,5 +1,7 @@
 import { connectToDatabase } from "../../../lib/mongodb";
-export default async function handler(req, res) {
+import { withSentry } from "@sentry/nextjs";
+
+const handler = async (req, res) => {
   const ObjectId = require("mongodb").ObjectId;
 
   if (!req.query.memeId) {
@@ -26,4 +28,6 @@ export default async function handler(req, res) {
       message: error?.message,
     });
   }
-}
+};
+
+export default withSentry(handler);
