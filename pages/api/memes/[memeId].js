@@ -1,27 +1,15 @@
 import { connectToDatabase } from "../../../lib/mongodb";
 import { withSentry } from "@sentry/nextjs";
-
-const allowCors = (fn) => async (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
-  }
-  return await fn(req, res);
-};
+import NextCors from "nextjs-cors";
 
 const handler = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   const ObjectId = require("mongodb").ObjectId;
 
   if (!req.query.memeId) {
@@ -50,4 +38,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default withSentry(allowCors(handler));
+export default withSentry(handler);
