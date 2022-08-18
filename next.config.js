@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         // matching all API routes
-        source: "/api/memes/:memeId/comments",
+        source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
@@ -29,8 +29,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/memes/:memeId/comments",
-        destination: "https://thatmeme.site/api/memes/:memeId/comments",
+        source: "/api/:path*",
+        destination: "https://thatmeme.site/api/:path*",
       },
     ];
   },
