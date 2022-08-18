@@ -90,7 +90,7 @@ const CommentsPage = () => {
           >
             <Box>
               <Slider {...settings}>
-                {memeDetails.images.map(({ url, alt }, index) => {
+                {memeDetails?.images?.map(({ url, alt }, index) => {
                   return (
                     <AspectRatio
                       key={index.toString()}
