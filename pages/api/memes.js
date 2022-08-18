@@ -1,18 +1,10 @@
 import { connectToDatabase } from "../../lib/mongodb";
+import { withSentry } from "@sentry/nextjs";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   try {
     const { db } = await connectToDatabase();
     const memes = await db.collection("memes").find({});
-    // .toArray(function (err, arrResults) {
-    //   console.log(`arrResults`, arrResults);
-    //   // result = [...arrResults];
-    //   for (const result of arrResults) {
-    //     results.push(result);
-    //   }
-
-    //   return arrResults;
-    // });
 
     const results = await memes.toArray();
 
@@ -27,4 +19,6 @@ export default async function handler(req, res) {
       message: error?.message,
     });
   }
-}
+};
+
+export default withSentry(handler);
