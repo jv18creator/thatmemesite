@@ -3,6 +3,15 @@ import { withSentry } from "@sentry/nextjs";
 
 const handler = async (req, res) => {
   const ObjectId = require("mongodb").ObjectId;
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
 
   if (!req.query.memeId) {
     return res.status(404).send({
