@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         // matching all API routes
-        source: "/api/memes/*",
+        source: "/api/memes*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
