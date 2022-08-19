@@ -1,4 +1,5 @@
 import { connectToDatabase } from "../../lib/mongodb";
+import { Timestamp } from "mongodb";
 
 export default async function handler(req, res) {
   const ObjectId = require("mongodb").ObjectId;
@@ -17,7 +18,10 @@ export default async function handler(req, res) {
       { _id: ObjectId(req.body.meme_id) },
       {
         $push: {
-          commented_by: req.body.commented_by,
+          commented_by: {
+            ...req.body.commented_by,
+            updatedAt: new Timestamp(),
+          },
         },
       },
       { returnDocument: "after" }

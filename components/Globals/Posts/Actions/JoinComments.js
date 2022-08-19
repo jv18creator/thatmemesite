@@ -2,13 +2,21 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../../../../contexts/user.context";
 import CommentField from "../../FormFields/CommentField";
 import { FormProvider, useForm } from "react-hook-form";
-import { Flex, Button, useToast } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  useToast,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import API from "../../../../helpers/axios/API";
 import { useRouter } from "next/router";
 import { isEmpty } from "lodash";
+import Link from "next/link";
 
-const JoinComments = ({ meme_id }) => {
+const JoinComments = ({ meme_id, setUpdatedMeme }) => {
   const { user } = useContext(UserContext);
+  const bgColorLogInBtn = useColorModeValue("#fff", "#000");
   const [isLoading, setIsLoading] = useState(false);
   const methods = useForm({
     comment: "",
@@ -49,8 +57,7 @@ const JoinComments = ({ meme_id }) => {
         methods.reset({
           comment: "",
         });
-        // setUpdatedMeme(response.data.meme);
-        // do stuff after comment is saved
+        setUpdatedMeme(response.data.meme);
       }
 
       setIsLoading(false);
@@ -62,7 +69,23 @@ const JoinComments = ({ meme_id }) => {
   return (
     <>
       {!user ? (
-        "JoinComments"
+        <Flex
+          bgGradient="linear(to-r, red.500, yellow.500)"
+          gap={2}
+          p={4}
+          borderRadius="lg"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Text flex={1} fontWeight={600} color="#fff">
+            Join the comment section
+          </Text>
+          <Link href="/login">
+            <Button fontSize={16} fontWeight={600} bg={bgColorLogInBtn}>
+              Log In
+            </Button>
+          </Link>
+        </Flex>
       ) : (
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>

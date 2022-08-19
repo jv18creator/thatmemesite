@@ -135,7 +135,10 @@ const CommentsPage = () => {
             </Box>
           ) : null}
           <Box maxW={["100%", "85%", "65%", "55%", "45%"]} mx="auto" mt={8}>
-            <JoinComments meme_id={memeDetails._id} />
+            <JoinComments
+              setUpdatedMeme={setMemeDetails}
+              meme_id={memeDetails._id}
+            />
           </Box>
         </Box>
       )}
