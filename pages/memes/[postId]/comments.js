@@ -17,6 +17,7 @@ import { settings } from "../../../components/Globals/Posts/Utils/utils";
 import Head from "next/head";
 import Image from "next/image";
 import JoinComments from "../../../components/Globals/Posts/Actions/JoinComments";
+import axios from "axios";
 
 const CommentsPage = () => {
   const { postId = null } = useRouter()?.query;
@@ -29,7 +30,7 @@ const CommentsPage = () => {
   const fetchComments = useCallback(async () => {
     if (postId) {
       try {
-        const response = await API.get(`/memes/${postId}`);
+        const response = await axios.get(`/api/memes?memeId=${postId}`);
         setMemeDetails(response.data.meme);
         setIsLoading(false);
       } catch (error) {
