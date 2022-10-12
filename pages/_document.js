@@ -10,6 +10,12 @@ export default class MyDocument extends Document {
         <Head>
           <script
             async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8475433627736737"
+            crossOrigin="anonymous"
+          ></script>
+
+          <script
+            async
             src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
           />
 
